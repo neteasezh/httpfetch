@@ -5,6 +5,7 @@ import com.github.youzan.httpfetch.http.HttpApiConfiguration;
 import com.github.youzan.httpfetch.http.HttpApiService;
 import com.github.youzan.httpfetch.reader.SourceReader;
 import com.github.youzan.httpfetch.reader.XmlReader;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -36,11 +37,11 @@ public class HttpFetchAutoConfiguration {
     private final ConfigurableApplicationContext applicationContext;
 
     public HttpFetchAutoConfiguration(HttpFetchProperties properties,
-                                      @Autowired(required = false) List<SourceReader> sourceReaders,
+                                      ObjectProvider<List<SourceReader>> readersProvider,
                                       Environment environment,
                                       ConfigurableApplicationContext applicationContext) {
         this.properties = properties;
-        this.sourceReaders = sourceReaders;
+        this.sourceReaders = readersProvider.getIfAvailable();
         this.environment = environment;
         this.applicationContext = applicationContext;
     }
